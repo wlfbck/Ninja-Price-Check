@@ -54,7 +54,7 @@ public class PriceChecker implements NativeKeyListener {
 	Robot robot;
 	Gson gson;
 
-	private final String currentLeague = "Flashback Event (BRE001)";//"Bestiary";
+	private final String currentLeague = "Flashback+Event+(BRE001)";//"Bestiary";
 	private final String ninjaArmourLink = "http://poe.ninja/api/Data/GetUniqueArmourOverview?league=";
 	private final String ninjaWeaponLink = "http://poe.ninja/api/Data/GetUniqueWeaponOverview?league=";
 	private final String ninjaFlaskLink = "http://poe.ninja/api/Data/GetUniqueFlaskOverview?league=";
