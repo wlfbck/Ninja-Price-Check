@@ -54,14 +54,14 @@ public class PriceChecker implements NativeKeyListener {
 	Robot robot;
 	Gson gson;
 
-	private final String currentLeague = "Bestiary";
-	private final String ninjaArmourLink = "http://cdn.poe.ninja/api/Data/GetUniqueArmourOverview?league=";
-	private final String ninjaWeaponLink = "http://cdn.poe.ninja/api/Data/GetUniqueWeaponOverview?league=";
-	private final String ninjaFlaskLink = "http://cdn.poe.ninja/api/Data/GetUniqueFlaskOverview?league=";
-	private final String ninjaAccessoryLink = "http://cdn.poe.ninja/api/Data/GetUniqueAccessoryOverview?league=";
-	private final String ninjaJewelLink = "http://cdn.poe.ninja/api/Data/GetUniqueJewelOverview?league=";
-	private final String ninjaDivinationCardLink = "http://cdn.poe.ninja/api/Data/GetDivinationCardsOverview?league=";
-	private final String ninjaMapLink = "http://cdn.poe.ninja/api/Data/GetUniqueMapOverview?league=";
+	private final String currentLeague = "Flashback Event (BRE001)";//"Bestiary";
+	private final String ninjaArmourLink = "http://poe.ninja/api/Data/GetUniqueArmourOverview?league=";
+	private final String ninjaWeaponLink = "http://poe.ninja/api/Data/GetUniqueWeaponOverview?league=";
+	private final String ninjaFlaskLink = "http://poe.ninja/api/Data/GetUniqueFlaskOverview?league=";
+	private final String ninjaAccessoryLink = "http://poe.ninja/api/Data/GetUniqueAccessoryOverview?league=";
+	private final String ninjaJewelLink = "http://poe.ninja/api/Data/GetUniqueJewelOverview?league=";
+	private final String ninjaDivinationCardLink = "http://poe.ninja/api/Data/GetDivinationCardsOverview?league=";
+	private final String ninjaMapLink = "http://poe.ninja/api/Data/GetUniqueMapOverview?league=";
 
 	private List<Item> allUniqueItems = new LinkedList<>();
 
