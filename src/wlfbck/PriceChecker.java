@@ -1,20 +1,15 @@
 package wlfbck;
 
 import java.awt.AWTException;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
-import java.awt.Insets;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.Robot;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -22,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -32,10 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.WindowConstants;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -54,20 +44,22 @@ public class PriceChecker implements NativeKeyListener {
 	Robot robot;
 	Gson gson;
 
-	private final String currentLeague = "Flashback+Event+(BRE001)";//"Bestiary";
-	private final String ninjaArmourLink = "http://poe.ninja/api/Data/GetUniqueArmourOverview?league=";
-	private final String ninjaWeaponLink = "http://poe.ninja/api/Data/GetUniqueWeaponOverview?league=";
-	private final String ninjaFlaskLink = "http://poe.ninja/api/Data/GetUniqueFlaskOverview?league=";
-	private final String ninjaAccessoryLink = "http://poe.ninja/api/Data/GetUniqueAccessoryOverview?league=";
-	private final String ninjaJewelLink = "http://poe.ninja/api/Data/GetUniqueJewelOverview?league=";
-	private final String ninjaDivinationCardLink = "http://poe.ninja/api/Data/GetDivinationCardsOverview?league=";
-	private final String ninjaMapLink = "http://poe.ninja/api/Data/GetUniqueMapOverview?league=";
+	private static final String leagueListURL= "http://api.pathofexile.com/leagues?type=main&compact=1";
+	private final int challengeLeagueID = 4;
+	private String currentLeague = "";//"Bestiary""Incursion";
+	private final String ninjaArmourLink = "https://poe.ninja/api/data/itemoverview?type=UniqueArmour&league=";
+	private final String ninjaWeaponLink = "https://poe.ninja/api/data/itemoverview?type=UniqueWeapon&league=";
+	private final String ninjaFlaskLink = "https://poe.ninja/api/data/itemoverview?type=UniqueFlask&league=";
+	private final String ninjaAccessoryLink = "https://poe.ninja/api/data/itemoverview?type=UniqueAccessory&league=";
+	private final String ninjaJewelLink = "https://poe.ninja/api/data/itemoverview?type=UniqueJewel&league=";
+	private final String ninjaDivinationCardLink = "https://poe.ninja/api/data/itemoverview?type=DivinationCard&league=";
+	private final String ninjaMapLink = "https://poe.ninja/api/data/itemoverview?type=UniqueMap&league=";
 
 	private List<Item> allUniqueItems = new LinkedList<>();
 
 	private int hotkeyCode = 61; // F3
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		// For KeyListener
 		Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
 		logger.setLevel(Level.OFF);
@@ -105,6 +97,7 @@ public class PriceChecker implements NativeKeyListener {
 		gson = new Gson();
 
 		createTrayIcon();
+		updateChallengeLeagueName();
 
 		// get price data every 2 hours and once on startup
 		Timer t = new Timer();
@@ -260,7 +253,7 @@ public class PriceChecker implements NativeKeyListener {
 	public void nativeKeyReleased(NativeKeyEvent event) {
 	}
 
-	private String readUrl(String urlString) throws IOException {
+	private static String readUrl(String urlString) throws IOException {
 		BufferedReader reader = null;
 		try {
 			URL url = new URL(urlString);
@@ -276,6 +269,19 @@ public class PriceChecker implements NativeKeyListener {
 			if (reader != null) {
 				reader.close();
 			}
+		}
+	}
+	
+	private boolean updateChallengeLeagueName() {
+		try {
+			JsonArray listOfLeagues = gson.fromJson(readUrl(leagueListURL), JsonArray.class);
+			JsonObject challengeLeague = (JsonObject) listOfLeagues.get(challengeLeagueID);
+			currentLeague = challengeLeague.get("id").getAsString();
+			return true;
+		} catch (JsonSyntaxException e) {
+			return false;
+		} catch (IOException e) {
+			return false;
 		}
 	}
 
